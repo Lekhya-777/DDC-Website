@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Defense Club</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Base Styles */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #121212;
+            color: #f0f0f0;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        section {
+            padding: 80px 0;
+            position: relative;
+            z-index: 2; /* Increased z-index to ensure sections are above the spotlight */
+        }
+        
+        .container {
+            width: 85%;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 3; /* Increased z-index for content within sections */
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: #00e6e6;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(0, 230, 230, 0.5), 0 0 20px rgba(0, 230, 230, 0.3); /* Made text glow more pronounced */
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        a {
+            color: #00e6e6;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        a:hover {
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: transparent;
+            color: #00e6e6;
+            padding: 12px 30px;
+            border: 2px solid #00e6e6;
+            border-radius: 30px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+            z-index: 3; /* Added z-index to ensure button is above spotlight */
+            box-shadow: 0 0 5px rgba(0, 230, 230, 0.3);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 230, 230, 0.2);
+            transition: all 0.4s ease-in-out;
+            z-index: -1;
+        }
+
+        .btn:hover {
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(0, 230, 230, 0.5);
+            transform: translateY(-3px);
+        }
+
+        .btn:hover::before {
+            left: 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: inline-block;
+            padding-bottom: 10px;
+            position: relative;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 3px;
+            background-color: #00e6e6;
+            box-shadow: 0 0 10px rgba(0, 230, 230, 0.7);
+        }
+
+        /* ENHANCED Dynamic Background */
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            background-color: #121212;
+            transition: filter 0.5s ease;
+        }
+
+        .circuit-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxsaW5lIHgxPSIwIiB5MT0iMCIgeDI9IjQwIiB5Mj0iMCIgc3Ryb2tlPSIjMDA0MDQwIiBzdHJva2Utd2lkdGg9IjAuNSIvPjxsaW5lIHgxPSIwIiB5MT0iMTAiIHgyPSI0MCIgeTI9IjEwIiBzdHJva2U9IiMwMDQwNDAiIHN0cm9rZS13aWR0aD0iMC41Ii8+PGxpbmUgeDE9IjAiIHkxPSIyMCIgeDI9IjQwIiB5Mj0iMjAiIHN0cm9rZT0iIzAwNDA0MCIgc3Ryb2tlLXdpZHRoPSIwLjUiLz48bGluZSB4MT0iMCIgeTE9IjMwIiB4Mj0iNDAiIHkyPSIzMCIgc3Ryb2tlPSIjMDA0MDQwIiBzdHJva2Utd2lkdGg9IjAuNSIvPjxsaW5lIHgxPSIxMCIgeTE9IjAiIHgyPSIxMCIgeTI9IjQwIiBzdHJva2U9IiMwMDQwNDAiIHN0cm9rZS13aWR0aD0iMC41Ii8+PGxpbmUgeDE9IjIwIiB5MT0iMCIgeDI9IjIwIiB5Mj0iNDAiIHN0cm9rZT0iIzAwNDA0MCIgc3Ryb2tlLXdpZHRoPSIwLjUiLz48bGluZSB4MT0iMzAiIHkxPSIwIiB4Mj0iMzAiIHkyPSI0MCIgc3Ryb2tlPSIjMDA0MDQwIiBzdHJva2Utd2lkdGg9IjAuNSIvPjxjaXJjbGUgY3g9IjEwIiBjeT0iMTAiIHI9IjIiIGZpbGw9IiMwMDQwNDAiLz48Y2lyY2xlIGN4PSIzMCIgY3k9IjEwIiByPSIyIiBmaWxsPSIjMDA0MDQwIi8+PGNpcmNsZSBjeD0iMTAiIGN5PSIzMCIgcj0yIiBmaWxsPSIjMDA0MDQwIi8+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIgZmlsbD0iIzAwNDA0MCIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==');
+            opacity: 0.15;
+            animation: pattern-pan 120s linear infinite;
+        }
+    
+        @keyframes pattern-pan {
+            from { background-position: 0 0; }
+            to { background-position: 100% 100%; }
+        }
+
+        .code-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .code-column {
+            position: absolute;
+            top: -100%;
+            display: flex;
+            flex-direction: column;
+            animation-name: codefall;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            white-space: nowrap;
+            color: rgba(0, 230, 230, 0.3);
+            font-family: 'Roboto Mono', monospace;
+            text-shadow: 0 0 5px rgba(0, 230, 230, 0.5);
+            font-size: 14px;
+        }
+
+        .binary-layer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            opacity: 0.1;
+        }
+
+        .binary-text {
+            position: absolute;
+            color: #00e6e6;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 20px;
+            white-space: nowrap;
+            opacity: 0;
+            animation: binaryFade 8s linear infinite;
+        }
+
+        .hex-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(30deg, #004040 12%, transparent 12.5%, transparent 87%, #004040 87.5%, #004040),
+                linear-gradient(150deg, #004040 12%, transparent 12.5%, transparent 87%, #004040 87.5%, #004040),
+                linear-gradient(30deg, #004040 12%, transparent 12.5%, transparent 87%, #004040 87.5%, #004040),
+                linear-gradient(150deg, #004040 12%, transparent 12.5%, transparent 87%, #004040 87.5%, #004040),
+                linear-gradient(60deg, #00404077 25%, transparent 25.5%, transparent 75%, #00404077 75%, #00404077),
+                linear-gradient(60deg, #00404077 25%, transparent 25.5%, transparent 75%, #00404077 75%, #00404077);
+            background-size: 80px 140px;
+            background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;
+            opacity: 0.05;
+        }
+    
+        .matrix-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        .matrix-rain canvas {
+            display: block;
+        }
+
+        @keyframes codefall {
+            0% {
+                transform: translateY(-100%);
+            }
+            100% {
+                transform: translateY(100vh);
+            }
+        }
+
+        @keyframes binaryFade {
+            0% {
+                opacity: 0;
+                transform: translateY(0) scale(0.8);
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-50px) scale(1.2);
+            }
+        }
+    
+        @keyframes pulse {
+            0% {
+                text-shadow: 0 0 5px rgba(0, 230, 230, 0.7);
+            }
+            50% {
+                text-shadow: 0 0 20px rgba(0, 230, 230, 1);
+            }
+            100% {
+                text-shadow: 0 0 5px rgba(0, 230, 230, 0.7);
+            }
+        }
+    
+        .glow {
+            text-shadow: 0 0 5px rgba(0, 230, 230, 0.7);
+            color: rgba(0, 230, 230, 0.7);
+        }
+
+        /* NEW: Spotlight overlay */
+        #spotlight-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 1; /* Above background, below content */
+            pointer-events: none;
+            /* Using a mask to create the "hole" */
+            mask-image: radial-gradient(circle at var(--cursor-x, 50%) var(--cursor-y, 50%), transparent 0%, transparent 100px, black 150px);
+            -webkit-mask-image: radial-gradient(circle at var(--cursor-x, 50%) var(--cursor-y, 50%), transparent 0%, transparent 100px, black 150px);
+        }
+        
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 0;
+            background-color: rgba(18, 18, 18, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(0, 230, 230, 0.2);
+        }
+
+        .navbar.scrolled {
+            padding: 15px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #00e6e6;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 230, 230, 0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #00e6e6;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #00e6e6;
+        }
+
+        /* Hero Section */
+        #home {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            background: rgba(0,0,0,0.5); /* Semi-transparent overlay to make text readable */
+            padding-top: 80px;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px rgba(0, 230, 230, 0.7), 0 0 10px rgba(0, 230, 230, 0.5);
+            }
+            to {
+                text-shadow: 0 0 10px rgba(0, 230, 230, 0.9), 0 0 20px rgba(0, 230, 230, 0.7), 0 0 30px rgba(0, 230, 230, 0.5);
+            }
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .typed-text {
+            color: #00e6e6;
+            font-weight: 600;
+        }
+
+        /* What We Do Section */
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background-color: rgba(30, 30, 30, 0.7);
+            border: 1px solid rgba(0, 230, 230, 0.2);
+            border-radius: 10px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .service-card.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s ease-out;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 230, 230, 0.3);
+            border-color: rgba(0, 230, 230, 0.5);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #00e6e6;
+            text-shadow: 0 0 10px rgba(0, 230, 230, 0.5);
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        /* Team Section */
+        #team {
+            background: rgba(18, 18, 18, 0.7);
+        }
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .team-member {
+            background-color: rgba(30, 30, 30, 0.7);
+            border: 1px solid rgba(0, 230, 230, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .team-member.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s ease-out;
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 230, 230, 0.3);
+            border-color: rgba(0, 230, 230, 0.5);
+        }
+
+        .member-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            overflow: hidden;
+            border: 3px solid #00e6e6;
+            box-shadow: 0 0 15px rgba(0, 230, 230, 0.5);
+        }
+
+        .member-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .team-member h3 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .team-member p {
+            color: #00e6e6;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        /* About Section */
+        #about {
+            background: rgba(18, 18, 18, 0.7);
+        }
+        .about-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .about-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /* Events Section */
+        #events {
+            background: rgba(18, 18, 18, 0.7);
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .event-card {
+            background-color: rgba(30, 30, 30, 0.7);
+            border: 1px solid rgba(0, 230, 230, 0.2);
+            border-radius: 10px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .event-card.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s ease-out;
+        }
+
+        .event-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 230, 230, 0.3);
+            border-color: rgba(0, 230, 230, 0.5);
+        }
+
+        .event-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        /* Contact Section */
+        #contact {
+            background: rgba(18, 18, 18, 0.7);
+        }
+
+        /* NEW: Styles for social links in contact section */
+        .contact-social-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .contact-social-links a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .contact-social-links a i {
+            font-size: 2rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: rgba(10, 10, 10, 0.9);
+            padding: 30px 0;
+            border-top: 1px solid rgba(0, 230, 230, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-social a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(0, 230, 230, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 230, 230, 0.3);
+            font-size: 1.2rem;
+        }
+
+        .footer-social a:hover {
+            background-color: rgba(0, 230, 230, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2), 0 0 10px rgba(0, 230, 230, 0.3);
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+    
+        /* Back to Top Button */
+        #back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgba(0, 230, 230, 0.5);
+            color: #121212;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 999;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+        }
+
+        #back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(-5px);
+        }
+
+        #back-to-top:hover {
+            background-color: #00ffff;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+        }
+    
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+        
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar .container {
+                padding: 0 20px;
+            }
+        
+            .menu-toggle {
+                display: block;
+            }
+        
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background-color: rgba(18, 18, 18, 0.95);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 30px;
+                transition: all 0.5s ease;
+            }
+        
+            .nav-links.active {
+                left: 0;
+            }
+        
+            .nav-links li {
+                margin: 0;
+            }
+        
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+        
+            .hero-content p {
+                font-size: 1rem;
+            }
+        
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+        
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+        
+            .services, .team-grid {
+                grid-template-columns: 1fr;
+            }
+        
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Enhanced Dynamic Background -->
+    <div class="background-animation">
+        <div class="circuit-pattern"></div>
+        <div class="hex-grid"></div>
+        <canvas id="matrixRain"></canvas>
+    </div>
+    <!-- NEW: Spotlight overlay to create the effect -->
+    <div id="spotlight-overlay"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="logo" style="display: flex; align-items: center; gap: 10px;">
+                <img src="logo.jpeg.jpg" alt="DDC Logo" style="height: 40px; border-radius: 8px; box-shadow: 0 0 10px #00e6e6; background: #222;"> 
+                <span>Digital Defense Club</span>
+            </a>
+            <div class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#what-we-do">What We Do</a></li>
+                <li><a href="#team">Our Team</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Digital Defense Club</h1>
+                <p>Securing the digital frontier through knowledge, innovation, and collaboration. Join us in exploring the world of <span class="typed-text" id="typedText"></span></p>
+                <a href="#what-we-do" class="btn">Explore</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- What We Do Section -->
+    <section id="what-we-do">
+        <div class="container">
+            <div class="section-title">
+                <h2>What We Do</h2>
+            </div>
+            <div class="services">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Ethical Hacking</h3>
+                    <p>Learn the art of ethical hacking and penetration testing to identify and fix security vulnerabilities before malicious actors can exploit them.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3>Cybersecurity Competitions</h3>
+                    <p>Participate in CTF (Capture The Flag) competitions, hackathons, and other cybersecurity challenges to test and improve your skills.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3>Workshops</h3>
+                    <p>Attend hands-on workshops on various cybersecurity topics, tools, and techniques led by industry experts and experienced members.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+  
+    <!-- Team Section -->
+    <section id="team">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Team</h2>
+            </div>
+            <!-- Dynamic team members will be inserted here by JavaScript -->
+            <div id="dynamicTeamGrid" class="team-grid"></div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>About Us</h2>
+            </div>
+            <div class="about-content">
+                <p>The CBIT Digital Defense Club is a community of passionate cybersecurity enthusiasts dedicated to exploring, learning, and mastering the art of digital security. We believe in fostering a culture of curiosity and ethical hacking to build a safer and more secure digital world for everyone.</p>
+                <p>Our mission is to provide students with the knowledge, skills, and resources they need to excel in the cybersecurity field. Through hands-on projects, workshops, and competitions, we aim to equip our members with the practical experience required to succeed in their careers.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section id="events">
+        <div class="container">
+            <div class="section-title">
+                <h2>Upcoming Events</h2>
+            </div>
+            <div class="events-grid">
+                <div class="event-card">
+                    <img src="logo.jpeg.jpg" alt="DDC Inauguration Logo" style="width: 100px; display: block; margin: 0 auto 20px; border-radius: 10px; box-shadow: 0 0 10px #00e6e6; background: #222;">
+                    <h3>Inauguration of Digital Defense Club</h3>
+                    <p>Celebrate the launch of the Digital Defense Club! Join us for the official inauguration event and be part of our cybersecurity journey.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Get in Touch</h2>
+            </div>
+            <div class="contact-social-links">
+                <a href="https://www.instagram.com/ddc_cbit?igsh=Z3FveTRzcDEwZ3N5" class="contact-social-link" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                    <span>@ddc_cbit</span>
+                </a>
+                <a href="https://in.linkedin.com/company/digital-defence-club" class="contact-social-link" target="_blank">
+                    <i class="fab fa-linkedin-in"></i>
+                    <span>CBIT Digital Defense Club</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <p class="copyright">&copy; 2025 Digital Defense Club. All rights reserved.</p>
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-discord"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="https://in.linkedin.com/company/digital-defence-club" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+            </div>
+        </div>
+    </footer>
+  
+    <!-- Dynamic Back to Top Button -->
+    <a href="#home" id="back-to-top" title="Back to Top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile Menu Toggle
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                });
+            });
+
+            // Sticky Header on Scroll
+            const navbar = document.querySelector('.navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // Typing Effect for Hero Section
+            const typedTextElement = document.getElementById('typedText');
+            const words = ['Cybersecurity', 'Ethical Hacking', 'Digital Forensics', 'Network Security'];
+            let wordIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+
+            function type() {
+                const currentWord = words[wordIndex];
+                let displayText = isDeleting ? currentWord.substring(0, charIndex - 1) : currentWord.substring(0, charIndex + 1);
+                typedTextElement.textContent = displayText;
+
+                if (!isDeleting && charIndex === currentWord.length) {
+                    isDeleting = true;
+                    setTimeout(type, 1500);
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    wordIndex = (wordIndex + 1) % words.length;
+                    setTimeout(type, 500);
+                } else {
+                    const typingSpeed = isDeleting ? 75 : 150;
+                    charIndex += isDeleting ? -1 : 1;
+                    setTimeout(type, typingSpeed);
+                }
+            }
+            type();
+
+            // Background Matrix Rain Animation
+            const canvas = document.getElementById('matrixRain');
+            const ctx = canvas.getContext('2d');
+        
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890@#$%^&*()';
+            const fontSize = 16;
+            const columns = canvas.width / fontSize;
+        
+            const drops = [];
+            for (let x = 0; x < columns; x++) {
+                drops[x] = 1;
+            }
+
+            function drawMatrix() {
+                ctx.fillStyle = 'rgba(18, 18, 18, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.fillStyle = '#00e6e6';
+                ctx.font = `${fontSize}px monospace`;
+
+                for (let i = 0; i < drops.length; i++) {
+                    const text = characters.charAt(Math.floor(Math.random() * characters.length));
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+
+            setInterval(drawMatrix, 33);
+
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+
+            // Back to Top Button Logic
+            const backToTopButton = document.getElementById('back-to-top');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopButton.classList.add('show');
+                } else {
+                    backToTopButton.classList.remove('show');
+                }
+            });
+
+            // Dynamic Team Section Logic
+            const teamMembers = [
+                {
+                    name: "Pradeep",
+                    role: "President",
+                    image: "Pradeep.jpg"
+                },
+                {
+                    name: "Vasanth Aditya",
+                    role: "Vice President",
+                    image: "Vasanthadithya.jpg"
+                },
+                {
+                    name: "Inayat",
+                    role: "Vice President",
+                    image: "https://placehold.co/150x150/004040/00e6e6?text=I"
+                },
+                {
+                    name: "Keerthana",
+                    role: "General Secretary",
+                    image: "Keerthana .jpg"
+                },
+                {
+                    name: "Ishanvith",
+                    role: "General Secretary",
+                    image: "https://placehold.co/150x150/004040/00e6e6?text=I"
+                },
+                {
+                    name: "Ashwith",
+                    role: "Joint Secretary",
+                    image: "https://placehold.co/150x150/004040/00e6e6?text=A"
+                },
+                {
+                    name: "Grace",
+                    role: "Joint Secretary",
+                    image: "grace.jpg"
+                },
+                {
+                    name: "Open Position",
+                    role: "Treasurer",
+                    image: "https://placehold.co/150x150/004040/00e6e6"
+                }
+            ];
+
+            const dynamicTeamGrid = document.getElementById('dynamicTeamGrid');
+
+            function renderTeamMembers() {
+                const teamHTML = teamMembers.map(member => `
+                    <div class="team-member">
+                        <div class="member-img">
+                            <img src="${member.image}" alt="Team Member: ${member.name}">
+                        </div>
+                        <h3>${member.name}</h3>
+                        <p>${member.role}</p>
+                    </div>
+                `).join('');
+                dynamicTeamGrid.innerHTML = teamHTML;
+                
+                // Re-attach the intersection observer to the newly created elements
+                const newElements = dynamicTeamGrid.querySelectorAll('.team-member');
+                newElements.forEach(el => observer.observe(el));
+            }
+
+            // Intersection Observer for scroll animations
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const elementsToAnimate = document.querySelectorAll('.service-card, .team-member, .event-card');
+            elementsToAnimate.forEach(el => observer.observe(el));
+            
+            // Initial render of the team members
+            renderTeamMembers();
+
+            // Cursor Spotlight Logic
+            const spotlightOverlay = document.getElementById('spotlight-overlay');
+            document.addEventListener('mousemove', (e) => {
+                spotlightOverlay.style.setProperty('--cursor-x', `${e.clientX}px`);
+                spotlightOverlay.style.setProperty('--cursor-y', `${e.clientY}px`);
+            });
+        });
+    </script>
+</body>
+</html>
